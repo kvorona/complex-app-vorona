@@ -119,8 +119,9 @@ class TestStartPage:
 
         username_field = driver.find_element(by=By.XPATH,
                                              value=".//input[@name='username' and @id='username-register']")
-        username_field.send_keys(f"username{random.randint(0, 200)}")
-        name = username_field
+        test_username = f"username{random.randint(0, 200)}"
+        username_field.send_keys(test_username)
+
         sleep(1)
 
         self.log.info("Filling Email field")
@@ -137,9 +138,13 @@ class TestStartPage:
         sleep(1)
 
         assert driver.find_element(by=By.XPATH,
-                                   value=".//img[@data-original-title='My Profile']"), "Not found button 'My Profile'"
+                                   value=".//img[@data-original-title='My Profile']").is_displayed(), \
+            "Not found button 'My Profile'"
         self.log.info("WE can see button 'My Profile'")
-        assert driver.find_element(by=By.XPATH, value=".//a[@href='/create-post']"), "Not found button 'create-post'"
+        assert driver.find_element(by=By.XPATH, value=".//a[@href='/create-post']").is_displayed(), \
+            "Not found button 'create-post'"
+        assert driver.find_element(by=By.XPATH, value=f".//a[@href='/profile/{test_username}']").is_displayed()
+
         self.log.info("WE can see button 'create-pos'")
         self.log.info("User successfully authorized!")
 
