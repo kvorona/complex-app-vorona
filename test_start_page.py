@@ -145,7 +145,7 @@ class TestStartPage:
             "Not found button 'create-post'"
         assert driver.find_element(by=By.XPATH, value=f".//a[@href='/profile/{test_username}']").is_displayed()
 
-        self.log.info("WE can see button 'create-pos'")
+        self.log.info("WE can see button 'create-post'")
         self.log.info("User successfully authorized!")
 
         self.log.info("Close driver")
