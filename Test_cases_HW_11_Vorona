@@ -1,0 +1,128 @@
+!!!Локатори!!!
+Форма реєстрації
+поле Username: .//input[@name="username" and @id="username-register"]  або .//div[@class="form-group"]//input[@id="username-register"]
+інфопомилка поля Username 1:  .//div[contains(text(),'Username must be at least 3 characters.')]
+інфопомилка поля Username 2:  .//div[contains(text(),'Username can only contain letters and numbers.')]
+поле Email: .//input[@name="email"]
+інфопомилка поля Email:  .//div[contains(text(),You must provide a valid email address.')]
+поле Password: .//input[@name="password" and @id="password-register"]
+інфопомилка поля Password:  .//div[contains(text(),'Password must be at least 12 characters.')]
+кнопка "Sign up for OurApp": .//button[contains(text(),'Sign up for OurApp')]
+
+
+
+Авторизація
+поле Username: .//input[@name="username" and @placeholder="Username"]
+поле Password: .//input[@name="password" and @placeholder="Password"]
+кнопка "Sign In": ".//button[contains(text(),'Sign In')]
+інфопомилка : .//div[contains(text(),'Invalid username / password')]
+кнопка профілю(для тесту, де потрібно переконатись що ми авторизувалиьс):  .//img[@data-original-title="My Profile"]
+кнопка вилогінування: .//button[contains(text(),'Sign Out')]
+кнопка створення публікації:   .//a[@href="/create-post"]
+
+Сторінка Публікації
+
+
+!!!Тести!!!
+Форма реєстрації:
+
+1. Перевірити форму реєстрації користувача з корректними данними.
+    Степи:
+    - перейти на сторінку https://qa-complex-app-for-testing.herokuapp.com/
+    - ввести корректний Username “Katya”
+    - ввести корректний Email “katya@gmail.com”
+    - ввести корректний Password на створення користувача “QAlightG4”
+    - клікнути кнопку “ Sign up for OurApp”
+
+Очікуваний результат: Реєстрація успішна.  Нас перекидає на сторінку користувача, де бачимо повідомлення:
+“Hello katya, your feed is empty.
+Your feed displays the latest posts from the people you follow. If you don’t have any friends to follow that’s okay;
+you can use the “Search” feature in the top menu bar to find content written by people with similar interests and then
+follow them.”
+
+
+2. Перевірити обов'язкові поля форми реєстрації
+    Степи:
+    - перейти на сторінку https://qa-complex-app-for-testing.herokuapp.com/
+    - Поля Username, Email, Password залишити пустими
+    - Клікнути кнопку “Sign up for OurApp”
+
+Очікуваний результат:
+Залишились на сторінці форми реєстрації.
+Бачимо інфопідказку над кожним із обов'язкових полів:
+    Username must be at least 3 characters.
+    You must provide a valid email address.
+    Password must be at least 12 characters.
+
+
+3. Валідація поля Username
+    Степи:
+    - відкрити сторінку форми https://qa-complex-app-for-testing.herokuapp.com/
+    - ввести будь-які спец. символи, більше 3х (наприклад “####”)
+Очікуваний результат: Виводиться інфо повідомлення про недопустимість цих символів:
+Username can only contain letters and numbers.
+
+
+4. Спроба реєстрації користувача, заповнивши лише Username (поля Email, Password пусті)
+    Степи:
+    - відкрити сторінку форми https://qa-complex-app-for-testing.herokuapp.com/
+    - ввести корректний Username “Katya”
+    - Клікнути кнопку “Sign up for OurApp”
+Очікуваний результат:
+Ми все ще на сторінці авторизації.
+не бачимо інфо підказку:
+    Username must be at least 3 characters.
+бачимо  інфо підказку:
+    You must provide a valid email address.
+    Password must be at least 12 characters.
+
+
+5. Спроба реєстрації користувача, заповнивши лише Email (поля Username, Password пусті)
+    Степи:
+    - відкрити сторінку форми https://qa-complex-app-for-testing.herokuapp.com/
+    - ввести корректний Email “katya@gmail.com”
+    - Клікнути кнопку “Sign up for OurApp”
+Очікуваний результат:
+Ми все ще знаходимось на сторінці авторизації.
+не бачимо  інфо підказку:
+    You must provide a valid email address.
+бачимо  інфо підказку:
+    Username must be at least 3 characters.
+    Password must be at least 12 characters.
+
+6. Спроба реєстрації користувача, заповнивши лише Password (поля Username, Email пусті)
+    Степи:
+    - відкрити сторінку форми https://qa-complex-app-for-testing.herokuapp.com/
+    - ввести корректний Password “QAlightG4”
+    - Клікнути кнопку “Sign up for OurApp”
+Очікуваний результат:
+Ми все ще знаходимось на сторінці авторизації.
+не бачимо  інфо підказку:
+    Password must be at least 12 characters.
+бачимо  інфо підказку:
+    Username must be at least 3 characters.
+    You must provide a valid email address.
+
+
+Авторизація:
+1. Авторизація користувача з вірно заповненими полями.
+Пре-кондішн:
+Створити користувача
+Авторизуватись користувачем
+Створити тестову публікацію, нариклад із назвою тайтлу "TestPost"
+    Степи:
+    - перейти на сторінку аторизації https://qa-complex-app-for-testing.herokuapp.com/
+    - в полі авторизації ввести Username
+    - в полі авторизації ввести Password
+    - клікнути кнопку “Sign in”
+Очікуваний результат: Користувач успішно авторизований: знаходимось на сторінці публікацій користувача. На сторінці відображається
+публікація із тайтлом "TestPost".
+Доступні кнопки "Create Post", "Sign Out", "My profile"
+
+2. Авторизація користувача з пустими полями.
+    Степи:
+    - перейти на стрінку авторизації https://qa-complex-app-for-testing.herokuapp.com/
+    - Поля Username та Password залишити пустими
+    - в правому верхньому кутку клінкнути кнопку “Sign in”
+Очікуваний результат:
+Випадає інфо повідомлення “Invalid username / password”
