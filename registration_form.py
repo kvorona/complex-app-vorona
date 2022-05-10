@@ -166,7 +166,7 @@ class TestStartPage:
         driver.find_element(by=By.XPATH, value='.//button[contains(text(),"Sign up for OurApp")]').click()
         sleep(1)
 
-        # TODO: assert not driver.find_element(by=By.XPATH,
+        # assert not driver.find_element(by=By.XPATH,
         #                            value=".//div[contains(text(),'Username can only contain letters and numbers.')]").is_displayed()
         # sleep(1)
 
