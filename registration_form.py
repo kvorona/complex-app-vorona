@@ -166,7 +166,7 @@ class TestStartPage:
         driver.find_element(by=By.XPATH, value='.//button[contains(text(),"Sign up for OurApp")]').click()
         sleep(1)
 
-        # assert not driver.find_element(by=By.XPATH,
+        # TODO: assert not driver.find_element(by=By.XPATH,
         #                            value=".//div[contains(text(),'Username can only contain letters and numbers.')]").is_displayed()
         # sleep(1)
 
@@ -207,7 +207,7 @@ class TestStartPage:
         driver.find_element(by=By.XPATH, value='.//button[contains(text(),"Sign up for OurApp")]').click()
         sleep(1)
 
-        # assert not driver.find_element(by=By.XPATH,
+        # TODO: assert not driver.find_element(by=By.XPATH,
         #                            value=".//div[contains(text(),'You must provide a valid email address.')]").is_displayed()
         sleep(1)
 
@@ -253,14 +253,10 @@ class TestStartPage:
         assert driver.find_element(by=By.XPATH,
                                    value=".//div[contains(text(),'You must provide a valid email address.')]").is_displayed(), \
             "We not see message 'You must provide a valid email address'"
-        # assert not driver.find_element(by=By.XPATH,
+
+        # TODO: assert not driver.find_element(by=By.XPATH,
         #                            value=".//div[contains(text(),'Password must be at least 12 characters.')]").is_displayed(), \
         #     "Password must be at least 12 characters."
-
-        assert driver.find_element(by=By.XPATH,
-                                   value='.//button[contains(text(),"Sign up for OurApp")]').is_displayed(), \
-            "We not see button 'Sign up for OurApp'"
-        self.log.info("We cannot registration. We see button 'Sign up for OurApp'")
 
         self.log.info("Close driver")
         driver.close()
