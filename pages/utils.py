@@ -23,3 +23,15 @@ def wait_until_ok(timeout=5, period=0.25):
         return wrapper
 
     return decorator
+
+
+def log_wrapper(func):
+    """Add logs for method using docsting"""
+
+    def wrapper(*args, **kwargs):
+        log = logging.getLogger("[LogDecorator]")
+        result = func(*args, **kwargs)
+        log.info(f"{func.__doc__}")
+        return result
+
+    return wrapper

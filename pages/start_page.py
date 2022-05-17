@@ -1,9 +1,9 @@
-from time import sleep
-
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from constants.start_page import StartPageConstants
 from pages.base_page import BasePage
+from pages.utils import wait_until_ok
 
 
 class StartPage(BasePage):
@@ -19,14 +19,12 @@ class StartPage(BasePage):
 
     def error_message(self):
         error_message = self.driver.find_element(by=By.XPATH, value=".//div[@class='alert alert-danger text-center']")
-        assert error_message.text == self.constants.SIGN_IN__ERROR_TEXT
+        assert error_message.text == "Invalid username / pasword", "Text is not valid"
 
     def sign_up(self, username='', email='', password=''):
         self.fill_field(xpath=self.constants.SIGN_UP_USERNAME, value=username)
         self.fill_field(xpath=self.constants.SIGN_UP_EMAIL, value=email)
         self.fill_field(xpath=self.constants.SIGN_UP_PASSWORD, value=password)
-        # sleep(1)
-        # self.click(xpath=self.constants.SIGN_UP_BUTTON)
 
     def find_elem_my_profile(self):
         assert self.driver.find_element(by=By.XPATH,
@@ -36,12 +34,15 @@ class StartPage(BasePage):
         assert self.driver.find_element(by=By.XPATH,
                                         value=self.constants.CREATE_POST).is_displayed(), "Not found button 'create-post'"
 
-    # TODO: def find_elem_profile_name(self):
-    #     assert self.driver.find_element(by=By.XPATH, value=f".//a[@href='/profile/{test_username}']").is_displayed()
-
+    @wait_until_ok(timeout=7, period=1)
     def click_sign_up_button(self):
-        sleep(1)
+        self.wait_until_clickable(xpath=self.constants.SIGN_UP_BUTTON)
+        self.find_and_click(xpath=self.constants.SIGN_UP_BUTTON)
+
+    @wait_until_ok(timeout=10, period=1)
+    def click_sign_up_and_verify(self):
         self.click(xpath=self.constants.SIGN_UP_BUTTON)
+        assert not self.is_element_exists(xpath=self.constants.SIGN_UP_BUTTON)
 
     def username_error(self):
         assert self.driver.find_element(by=By.XPATH, value=self.constants.SIGN_UP_USERNAME_ERROR).is_displayed(), \
@@ -62,3 +63,10 @@ class StartPage(BasePage):
     def display_sign_up_button(self):
         assert self.driver.find_element(by=By.XPATH, value=self.constants.SIGN_UP_BUTTON).is_displayed(), \
             "We not see button 'Sign up for OurApp'"
+
+    def is_element_exists(self, xpath):
+        try:
+            self.driver.find_element(by=By.XPATH, value=xpath)
+            return True
+        except (TimeoutError, NoSuchElementException):
+            return False
