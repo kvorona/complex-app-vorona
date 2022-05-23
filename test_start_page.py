@@ -5,6 +5,7 @@ import pytest
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 from constants.base import BaseConstants
+from constants.start_page import StartPageConstants
 from pages.start_page import StartPage
 
 
@@ -14,6 +15,7 @@ class TestStartPage:
     @pytest.fixture(scope="function")
     def start_page(self):
         driver = WebDriver(executable_path=BaseConstants.DRIVER)
+        driver.implicitly_wait(2)
         driver.get(BaseConstants.BASE_URL)
         yield StartPage(driver)
         driver.close()
@@ -27,7 +29,6 @@ class TestStartPage:
         - Click on 'Sign In' button
         - Verify error message
         """
-
         start_page.sign_in()
         self.log.info("Verifying error message")
         start_page.error_message()
@@ -53,22 +54,13 @@ class TestStartPage:
         - Fill field Password
         - Click on 'Sign up for OurApp' button
         """
-
-        start_page.sign_up(username=f"username{random.randint(0, 200)}",
-                           password=f'RandomPwd11{random.randint(0, 200)}',
-                           email=f"email{random.randint(0, 200)}@gmail.com")
-        start_page.click_sign_up_button()
+        start_page.sign_up(username=f"username{random.randint(700, 10000)}",
+                           password=f'RandomPwd11{random.randint(0, 10000)}',
+                           email=f"email{random.randint(0, 10000)}@gmail.com")
+        start_page.click_sign_up_and_verify()
 
         start_page.find_elem_my_profile()
         start_page.find_elem_create_post()
-
-        # TODO: username_field = driver.find_element(by=By.XPATH, value=".//input[@name='username'
-        #  and @id='username-register']")
-        # test_username = f"username{random.randint(0, 200)}"
-        # username_field.send_keys(test_username)
-        # start_page.find_elem_profile_name()
-
-        # assert driver.find_element(by=By.XPATH, value=f".//a[@href='/profile/{test_username}']").is_displayed()
 
     def test_registration_form_required_fields(self, start_page):
         """
@@ -91,7 +83,8 @@ class TestStartPage:
         - Click on 'Sign up for OurApp' button
         """
 
-        start_page.sign_up(username="####", password=f'RandomPwd11{random.randint(0, 200)}',
+        start_page.sign_up(username="####",
+                           password=f'RandomPwd11{random.randint(0, 10000)}',
                            email=f"email{random.randint(0, 200)}@gmail.com")
         start_page.click_sign_up_button()
 
@@ -105,15 +98,14 @@ class TestStartPage:
         - Fill field Username
         - Click on 'Sign up for OurApp' button
         """
-        start_page.sign_up(username=f"username{random.randint(0, 200)}")
+        start_page.sign_up(username=f"username{random.randint(0, 10000)}")
         start_page.click_sign_up_button()
 
         start_page.display_sign_up_button()
         start_page.password_error()
         start_page.email_error()
 
-        # TODO: assert not driver.find_element(by=By.XPATH,
-        #  value=".//div[contains(text(),'Username can only contain letters and numbers.')]").is_displayed()
+        assert not start_page.is_element_exists(StartPageConstants.SIGN_UP_USERNAME_ERROR)
 
     def test_registration_with_only_email_field(self, start_page):
         """
@@ -122,15 +114,14 @@ class TestStartPage:
         - Fill field email
         - Click on 'Sign up for OurApp' button
         """
-        start_page.sign_up(email=f"email{random.randint(0, 200)}@gmail.com")
+        start_page.sign_up(email=f"email{random.randint(0, 10000)}@gmail.com")
         start_page.click_sign_up_button()
 
         start_page.display_sign_up_button()
         start_page.username_error()
         start_page.password_error()
 
-        # TODO: assert not driver.find_element(by=By.XPATH, value=".//div[contains(text(),
-        #  'You must provide a valid email address.')]").is_displayed()
+        assert not start_page.is_element_exists(StartPageConstants.SIGN_UP_EMAIL_ERROR)
 
     def test_registration_with_only_password_field(self, start_page):
         """
@@ -140,12 +131,11 @@ class TestStartPage:
         - Click on 'Sign up for OurApp' button
         """
 
-        start_page.sign_up(password=f"Passwordtest{random.randint(0, 200)}")
+        start_page.sign_up(password=f"Passwordtest{random.randint(0, 10000)}")
         start_page.click_sign_up_button()
 
         start_page.display_sign_up_button()
         start_page.username_error()
         start_page.email_error()
 
-        # TODO: assert not driver.find_element(by=By.XPATH, value=".//div[contains(text(),
-        #  'Password must be at least 12 characters.')]").is_displayed(), "Password must be at least 12 characters."
+        assert not start_page.is_element_exists(StartPageConstants.SIGN_UP_PASSWORD_ERROR)
